@@ -1,3 +1,3 @@
 # PythonMiniProject
-This is done for college asignment
-succesfully  collaborated
+MINI Project using python
+
