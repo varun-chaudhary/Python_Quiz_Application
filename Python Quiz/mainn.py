@@ -1,232 +1,222 @@
 from tkinter import*
 import random
 
-questions = [
-    "1 question",
-    "2 question",
-    "3 question",
-    "4 question",
-    "5 question",
-    "6 question",
-    "7 question",
-    "8 question",
-    "9 question",
-    "10 question",
-]
+class questions:
 
-choice_ans = [
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-    ["1", "2", "3", "4"],
-]
+    questions = [
+        "1 question",
+        "2 question",
+        "3 question",
+        "4 question",
+        "5 question",
+        "6 question",
+        "7 question",
+        "8 question",
+        "9 question",
+        "10 question",
+    ]
 
-# will contain the correct answers of questions
-answers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    choice_ans = [
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+        ["1", "2", "3", "4"],
+    ]
 
-user_ans = []
+    # will contain the correct answers of questions
+    answers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    user_ans = []
+    indexes = []
+    count = 1
 
-indexes = []
 
+    def gen(self):
+        while(len(self.indexes) < 5):
+            x = random.randint(0, 9)
+            # if x not in indexes:
+            #     indexes.append(x)
+            if x in self.indexes:
+                continue
+            else:
+                self.indexes.append(x)
 
-def gen():
-    global indexes
-    while(len(indexes) < 5):
-        x = random.randint(0, 9)
-        # if x not in indexes:
-        #     indexes.append(x)
-        if x in indexes:
-            continue
+    def showresult(self,score):
+        global questionlabel ,r1 ,r2 , r3 , r4 
+        questionlabel.destroy()
+        r1.destroy()
+        r2.destroy()
+        r3.destroy()
+        r4.destroy()
+
+        labelimg = Label(
+            root,
+            bg="white",
+            border=0
+        )
+        labelimg.pack()
+
+        labelresulttext = Label(
+            root,
+            font=("Arial", 20),
+            bg="white"
+        )
+        labelresulttext.pack()
+
+        if score >= 20:
+            # img = PhotoImage(file="image.png")
+            # labelimg.configure(image=img)
+            # labelimage.image = img
+            labelresulttext.configure(
+                text="You did excellent !!!!!\n\n you got "
+            )
+
+        elif score < 20 or score >= 10:
+            # img = PhotoImage(file="image.png")
+            # labelimg.configure(image=img)
+            # labelimage.image = img
+            labelresulttext.configure(
+                text="You can do better !!!!!\n\n you got "
+            )
+
+        elif score < 10:
+            # img = PhotoImage(file="image.png")
+            # labelimg.configure(image=img)
+            # labelimage.image = img
+            labelresulttext.configure(
+                text="you should work hard !!!!!\n\n you got "
+            )
+
+    def calc(self):
+        # global indexes, user_ans, answers
+        x1 = 0
+        score = 0
+        for i in self.indexes:
+            # print("temp = ", x1)
+            if self.user_ans[x1] == self.answers[i]:
+                score += 5
+            x1 += 1
+        # print("score = ", score)
+        self.showresult(score)
+
+    def selected(self):
+        global questionlabel ,r1 ,r2 , r3 , r4
+        x = self.radiovar.get()
+        # here x will get the value which user choose as input
+        # print(x)
+        self.user_ans.append(x)
+        self.radiovar.set(-1)
+        if self.count < 5:
+            questionlabel.config(text=self.questions[self.indexes[self.count]])
+            r1['text'] = self.choice_ans[self.indexes[self.count]][0]
+            r2['text'] = self.choice_ans[self.indexes[self.count]][1]
+            r3['text'] = self.choice_ans[self.indexes[self.count]][2]
+            r4['text'] = self.choice_ans[self.indexes[self.count]][3]
+            self.count += 1
         else:
-            indexes.append(x)
+            print(self.indexes)
+            print(self.user_ans)
+            self.calc()
 
-
-def showresult(score):
-    questionlabel.destroy()
-    r1.destroy()
-    r2.destroy()
-    r3.destroy()
-    r4.destroy()
-
-    labelimg = Label(
-        root,
-        bg="white",
-        border=0
-    )
-    labelimg.pack()
-
-    labelresulttext = Label(
-        root,
-        font=("Arial", 20),
-        bg="white"
-    )
-    labelresulttext.pack()
-
-    if score >= 20:
-        # img = PhotoImage(file="image.png")
-        # labelimg.configure(image=img)
-        # labelimage.image = img
-        labelresulttext.configure(
-            text="You did excellent !!!!!\n\n you got "
+    def start_Q(self):
+        global questionlabel ,r1 ,r2,r3,r4
+        questionlabel = Label(
+            root,
+            # text="Sample Question which can be too long it will be in next line due to wrap length",
+            text=self.questions[self.indexes[0]],
+            font=("Arial", 16),
+            width=500,
+            justify="center",
+            wraplength=400,
+            bg="white",
         )
+        questionlabel.pack(pady=(100, 30))
 
-    elif score < 20 or score >= 10:
-        # img = PhotoImage(file="image.png")
-        # labelimg.configure(image=img)
-        # labelimage.image = img
-        labelresulttext.configure(
-            text="You can do better !!!!!\n\n you got "
+        self.radiovar = IntVar()
+        self.radiovar.set(-1)
+        # by setting radio var -1 it will not check any option automatically
+
+        r1 = Radiobutton(
+            root,
+            text=self.choice_ans[self.indexes[0]][0],
+            font=("Times", 12),
+            value=0,
+            variable=self.radiovar,
+            command=self.selected,
+            bg="white",
         )
+        r1.pack(pady=5)
 
-    elif score < 10:
-        # img = PhotoImage(file="image.png")
-        # labelimg.configure(image=img)
-        # labelimage.image = img
-        labelresulttext.configure(
-            text="you should work hard !!!!!\n\n you got "
+        r2 = Radiobutton(
+            root,
+            text=self.choice_ans[self.indexes[0]][1],
+            font=("Times", 12),
+            value=1,
+            variable=self.radiovar,
+            command=self.selected,
+            bg="white",
         )
+        r2.pack(pady=5)
 
+        r3 = Radiobutton(
+            root,
+            text=self.choice_ans[self.indexes[0]][2],
+            font=("Times", 12),
+            value=2,
+            variable=self.radiovar,
+            command=self.selected,
+            bg="white",
+        )
+        r3.pack(pady=5)
 
-def calc():
-    global indexes, user_ans, answers
-    x1 = 0
-    score = 0
-    for i in indexes:
-        # print("temp = ", x1)
-        if user_ans[x1] == answers[i]:
-            score += 5
-        x1 += 1
-    # print("score = ", score)
-    showresult(score)
+        r4 = Radiobutton(
+            root,
+            text=self.choice_ans[self.indexes[0]][3],
+            font=("Times", 12),
+            value=3,
+            variable=self.radiovar,
+            command=self.selected,
+            bg="white",
+        )
+        r4.pack(pady=5)
 
+    def Easy(self):
+        labelinst.destroy()
+        labelinstr.destroy()
+        # img1label.destroy()
+        txtlabel.destroy()
+        E_button.destroy()
+        M_button.destroy()
+        H_button.destroy()
+        self.gen()
+        self.start_Q()
 
-count = 1
+    def Medium(self):
+        labelinst.destroy()
+        labelinstr.destroy()
+        # img1label.destroy()
+        txtlabel.destroy()
+        E_button.destroy()
+        M_button.destroy()
+        H_button.destroy()
+        self.gen()
+        self.start_Q()
 
-
-def selected():
-    global radiovar, user_ans, questionlabel, r1, r2, r3, r4, count
-    x = radiovar.get()
-    # here x will get the value which user choose as input
-    # print(x)
-    user_ans.append(x)
-    radiovar.set(-1)
-    if count < 5:
-        questionlabel.config(text=questions[indexes[count]])
-        r1['text'] = choice_ans[indexes[count]][0]
-        r2['text'] = choice_ans[indexes[count]][1]
-        r3['text'] = choice_ans[indexes[count]][2]
-        r4['text'] = choice_ans[indexes[count]][3]
-        count += 1
-    else:
-        print(indexes)
-        print(user_ans)
-        calc()
-
-
-def start_Q():
-    global questionlabel, r1, r2, r3, r4
-    questionlabel = Label(
-        root,
-        # text="Sample Question which can be too long it will be in next line due to wrap length",
-        text=questions[indexes[0]],
-        font=("Arial", 16),
-        width=500,
-        justify="center",
-        wraplength=400,
-        bg="white",
-    )
-    questionlabel.pack(pady=(100, 30))
-
-    global radiovar
-    radiovar = IntVar()
-    radiovar.set(-1)
-    # by setting radio var -1 it will not check any option automatically
-
-    r1 = Radiobutton(
-        root,
-        text=choice_ans[indexes[0]][0],
-        font=("Times", 12),
-        value=0,
-        variable=radiovar,
-        command=selected,
-        bg="white",
-    )
-    r1.pack(pady=5)
-
-    r2 = Radiobutton(
-        root,
-        text=choice_ans[indexes[0]][1],
-        font=("Times", 12),
-        value=1,
-        variable=radiovar,
-        command=selected,
-        bg="white",
-    )
-    r2.pack(pady=5)
-
-    r3 = Radiobutton(
-        root,
-        text=choice_ans[indexes[0]][2],
-        font=("Times", 12),
-        value=2,
-        variable=radiovar,
-        command=selected,
-        bg="white",
-    )
-    r3.pack(pady=5)
-
-    r4 = Radiobutton(
-        root,
-        text=choice_ans[indexes[0]][3],
-        font=("Times", 12),
-        value=3,
-        variable=radiovar,
-        command=selected,
-        bg="white",
-    )
-    r4.pack(pady=5)
-
-
-def Easy():
-    labelinst.destroy()
-    labelinstr.destroy()
-    # img1label.destroy()
-    txtlabel.destroy()
-    E_button.destroy()
-    M_button.destroy()
-    H_button.destroy()
-    gen()
-    start_Q()
-
-
-def Medium():
-    labelinst.destroy()
-    labelinstr.destroy()
-    # img1label.destroy()
-    txtlabel.destroy()
-    E_button.destroy()
-    M_button.destroy()
-    H_button.destroy()
-    gen()
-    start_Q()
-
-
-def Hard():
-    labelinst.destroy()
-    labelinstr.destroy()
-    # img1label.destroy()
-    txtlabel.destroy()
-    E_button.destroy()
-    M_button.destroy()
-    H_button.destroy()
-    gen()
-    start_Q()
+    def Hard(self):
+        labelinst.destroy()
+        labelinstr.destroy()
+        # img1label.destroy()
+        txtlabel.destroy()
+        E_button.destroy()
+        M_button.destroy()
+        H_button.destroy()
+        self.gen()
+        self.start_Q()
 
 
 root = Tk()
@@ -274,12 +264,13 @@ labelinstr = Label(
 )
 labelinstr.pack(pady=(0, 30))
 
+a = questions()
 # use image=img1 in place of text in button
 E_button = Button(
     root,
     text="Easy",
     relief=FLAT,
-    command=Easy
+    command=a.Easy
 )
 E_button.pack(pady=(0, 30))
 
@@ -288,7 +279,7 @@ M_button = Button(
     root,
     text="Medium",
     relief=FLAT,
-    command=Medium
+    command=a.Medium
 )
 M_button.pack(pady=(0, 30))
 
@@ -297,7 +288,7 @@ H_button = Button(
     root,
     text="Hard",
     relief=FLAT,
-    command=Hard
+    command=a.Hard
 )
 H_button.pack(pady=(0, 30))
 
