@@ -92,6 +92,8 @@ class questions:
                 text="you should work hard !!!!!\n\n you got "
             )
 
+        return score
+
     def calc(self):
         # global indexes, user_ans, answers
         x1 = 0
@@ -219,78 +221,84 @@ class questions:
         self.start_Q()
 
 
-root = Tk()
-# this is for a single window program in which we are going to destroy the previous things and create new things
-# in multi window whole previous window is destroyed and new window is created
+def main():
+    global txtlabel ,labelinst ,labelinstr ,E_button ,M_button ,H_button ,root
+    root = Tk()
+    # this is for a single window program in which we are going to destroy the previous things and create new things
+    # in multi window whole previous window is destroyed and new window is created
 
-root.title("Quiz")
-root.geometry('700x600')
-root.config(bg="white")
-root.resizable(0, 0)
+    root.title("Quiz")
+    root.geometry('700x600')
+    root.config(bg="white")
+    root.resizable(0, 0)
 
-# img1 = PhotoImage(file="terentula nebula.png")
-# img1label = Label(root, image=img1, bg="white")
-# img1label.pack(paddy = (40,0))
+    # img1 = PhotoImage(file="terentula nebula.png")
+    # img1label = Label(root, image=img1, bg="white")
+    # img1label.pack(paddy = (40,0))
 
-txtlabel = Label(
-    root,
-    text="Python Quiz",
-    font=("Arial", 30, "bold"),
-    bg="white"
+    txtlabel = Label(
+        root,
+        text="Python Quiz",
+        font=("Arial", 30, "bold"),
+        bg="white"
 
-)
-txtlabel.pack(pady=(30, 50))
-
-
-# img2 = PhotoImage(file="file name")
-
-labelinst = Label(
-    root,
-    text="Instructions\n",
-    font=(
-        "Arial", 20),
-    bg="white",
-    justify="center"
-)
-labelinst.pack(pady=(10, 0))
-
-labelinstr = Label(
-    root,
-    text="points",
-    width=100,
-    font=("Arial", 15),
-    bg="black",
-    foreground="yellow"
-)
-labelinstr.pack(pady=(0, 30))
-
-a = questions()
-# use image=img1 in place of text in button
-E_button = Button(
-    root,
-    text="Easy",
-    relief=FLAT,
-    command=a.Easy
-)
-E_button.pack(pady=(0, 30))
+    )
+    txtlabel.pack(pady=(30, 50))
 
 
-M_button = Button(
-    root,
-    text="Medium",
-    relief=FLAT,
-    command=a.Medium
-)
-M_button.pack(pady=(0, 30))
+    # img2 = PhotoImage(file="file name")
+
+    labelinst = Label(
+        root,
+        text="Instructions\n",
+        font=(
+            "Arial", 20),
+        bg="white",
+        justify="center"
+    )
+    labelinst.pack(pady=(10, 0))
+
+    labelinstr = Label(
+        root,
+        text="points",
+        width=100,
+        font=("Arial", 15),
+        bg="black",
+        foreground="yellow"
+    )
+    labelinstr.pack(pady=(0, 30))
+
+    a = questions()
+    # use image=img1 in place of text in button
+    E_button = Button(
+        root,
+        text="Easy",
+        relief=FLAT,
+        command=a.Easy
+    )
+    E_button.pack(pady=(0, 30))
 
 
-H_button = Button(
-    root,
-    text="Hard",
-    relief=FLAT,
-    command=a.Hard
-)
-H_button.pack(pady=(0, 30))
+    M_button = Button(
+        root,
+        text="Medium",
+        relief=FLAT,
+        command=a.Medium
+    )
+    M_button.pack(pady=(0, 30))
 
 
-root.mainloop()
+    H_button = Button(
+        root,
+        text="Hard",
+        relief=FLAT,
+        command=a.Hard
+    )
+    H_button.pack(pady=(0, 30))
+
+
+    root.mainloop()
+
+
+if __name__ == '__main__':
+    main()
