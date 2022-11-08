@@ -1,7 +1,86 @@
 from tkinter import*
 import random
 
+def main():
+    root = Tk()
+    quiz = questions(root)
+    root.mainloop()
+
+
 class questions:
+    def __init__(self , root):
+        global txtlabel ,labelinst ,labelinstr ,E_button ,M_button ,H_button
+        # this is for a single window program in which we are going to destroy the previous things and create new things
+        # in multi window whole previous window is destroyed and new window is created
+        self.root = root
+        self.root.title("Quiz")
+        self.root.geometry('700x600')
+        self.root.config(bg="white")
+        self.root.resizable(0, 0)
+
+        # img1 = PhotoImage(file="terentula nebula.png")
+        # img1label = Label(self.root, image=img1, bg="white")
+        # img1label.pack(paddy = (40,0))
+
+        txtlabel = Label(
+            self.root,
+            text="Python Quiz",
+            font=("Arial", 30, "bold"),
+            bg="white"
+
+        )
+        txtlabel.pack(pady=(30, 50))
+
+
+        # img2 = PhotoImage(file="file name")
+
+        labelinst = Label(
+            self.root,
+            text="Instructions\n",
+            font=("Arial", 20),
+            bg="white",
+            justify="center"
+        )
+        labelinst.pack(pady=(10, 0))
+
+        labelinstr = Label(
+            self.root,
+            text="points",
+            width=100,
+            font=("Arial", 15),
+            bg="black",
+            foreground="yellow"
+        )
+        labelinstr.pack(pady=(0, 30))
+
+        # a = questions()
+        # use image=img1 in place of text in button
+        E_button = Button(
+            self.root,
+            text="Easy",
+            relief=FLAT,
+            command=self.Easy
+        )
+        E_button.pack(pady=(0, 30))
+
+
+        M_button = Button(
+            self.root,
+            text="Medium",
+            relief=FLAT,
+            command=self.Medium
+        )
+        M_button.pack(pady=(0, 30))
+
+
+        H_button = Button(
+            self.root,
+            text="Hard",
+            relief=FLAT,
+            command=self.Hard
+        )
+        H_button.pack(pady=(0, 30))
+
 
     questions = [
         "1 question",
@@ -55,14 +134,14 @@ class questions:
         r4.destroy()
 
         labelimg = Label(
-            root,
+            self.root,
             bg="white",
             border=0
         )
         labelimg.pack()
 
         labelresulttext = Label(
-            root,
+            self.root,
             font=("Arial", 20),
             bg="white"
         )
@@ -73,7 +152,7 @@ class questions:
             # labelimg.configure(image=img)
             # labelimage.image = img
             labelresulttext.configure(
-                text="You did excellent !!!!!\n\n you got "
+                text="You did excellent !!!!!\n\n you got " + str(score)
             )
 
         elif score < 20 or score >= 10:
@@ -81,7 +160,7 @@ class questions:
             # labelimg.configure(image=img)
             # labelimage.image = img
             labelresulttext.configure(
-                text="You can do better !!!!!\n\n you got "
+                text="You can do better !!!!!\n\n you got " + str(score)
             )
 
         elif score < 10:
@@ -89,7 +168,7 @@ class questions:
             # labelimg.configure(image=img)
             # labelimage.image = img
             labelresulttext.configure(
-                text="you should work hard !!!!!\n\n you got "
+                text="you should work hard !!!!!\n\n you got " + str(score)
             )
 
         return score
@@ -128,7 +207,7 @@ class questions:
     def start_Q(self):
         global questionlabel ,r1 ,r2,r3,r4
         questionlabel = Label(
-            root,
+            self.root,
             # text="Sample Question which can be too long it will be in next line due to wrap length",
             text=self.questions[self.indexes[0]],
             font=("Arial", 16),
@@ -144,7 +223,7 @@ class questions:
         # by setting radio var -1 it will not check any option automatically
 
         r1 = Radiobutton(
-            root,
+            self.root,
             text=self.choice_ans[self.indexes[0]][0],
             font=("Times", 12),
             value=0,
@@ -155,7 +234,7 @@ class questions:
         r1.pack(pady=5)
 
         r2 = Radiobutton(
-            root,
+            self.root,
             text=self.choice_ans[self.indexes[0]][1],
             font=("Times", 12),
             value=1,
@@ -166,7 +245,7 @@ class questions:
         r2.pack(pady=5)
 
         r3 = Radiobutton(
-            root,
+            self.root,
             text=self.choice_ans[self.indexes[0]][2],
             font=("Times", 12),
             value=2,
@@ -177,7 +256,7 @@ class questions:
         r3.pack(pady=5)
 
         r4 = Radiobutton(
-            root,
+            self.root,
             text=self.choice_ans[self.indexes[0]][3],
             font=("Times", 12),
             value=3,
@@ -219,85 +298,6 @@ class questions:
         H_button.destroy()
         self.gen()
         self.start_Q()
-
-
-def main():
-    global txtlabel ,labelinst ,labelinstr ,E_button ,M_button ,H_button ,root
-    root = Tk()
-    # this is for a single window program in which we are going to destroy the previous things and create new things
-    # in multi window whole previous window is destroyed and new window is created
-
-    root.title("Quiz")
-    root.geometry('700x600')
-    root.config(bg="white")
-    root.resizable(0, 0)
-
-    # img1 = PhotoImage(file="terentula nebula.png")
-    # img1label = Label(root, image=img1, bg="white")
-    # img1label.pack(paddy = (40,0))
-
-    txtlabel = Label(
-        root,
-        text="Python Quiz",
-        font=("Arial", 30, "bold"),
-        bg="white"
-
-    )
-    txtlabel.pack(pady=(30, 50))
-
-
-    # img2 = PhotoImage(file="file name")
-
-    labelinst = Label(
-        root,
-        text="Instructions\n",
-        font=(
-            "Arial", 20),
-        bg="white",
-        justify="center"
-    )
-    labelinst.pack(pady=(10, 0))
-
-    labelinstr = Label(
-        root,
-        text="points",
-        width=100,
-        font=("Arial", 15),
-        bg="black",
-        foreground="yellow"
-    )
-    labelinstr.pack(pady=(0, 30))
-
-    a = questions()
-    # use image=img1 in place of text in button
-    E_button = Button(
-        root,
-        text="Easy",
-        relief=FLAT,
-        command=a.Easy
-    )
-    E_button.pack(pady=(0, 30))
-
-
-    M_button = Button(
-        root,
-        text="Medium",
-        relief=FLAT,
-        command=a.Medium
-    )
-    M_button.pack(pady=(0, 30))
-
-
-    H_button = Button(
-        root,
-        text="Hard",
-        relief=FLAT,
-        command=a.Hard
-    )
-    H_button.pack(pady=(0, 30))
-
-
-    root.mainloop()
 
 
 if __name__ == '__main__':
