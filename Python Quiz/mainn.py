@@ -1,3 +1,4 @@
+from PIL import Image , ImageTk
 from tkinter import*
 import random
 
@@ -15,72 +16,99 @@ class questions:
         self.root = root
         self.root.title("Quiz")
         self.root.geometry('700x600')
-        self.root.config(bg="white")
+        self.root.config(bg="#7876FD")
         self.root.resizable(0, 0)
-
+        self.root.configure(bg='#7876FD')
         # img1 = PhotoImage(file="terentula nebula.png")
-        # img1label = Label(self.root, image=img1, bg="white")
+        # img1label = Label(self.root, image=img1, bg="#7876FD")
         # img1label.pack(paddy = (40,0))
+
+        labelinst1 = Label(
+            self.root,
+            text='Hello',
+            font=("impact",20,"bold"),
+            bg='#20b2aa', #7876FD
+            # fg='#4DB1FF',
+        )
+        labelinst1.pack(fill="both")
+
 
         txtlabel = Label(
             self.root,
             text="Python Quiz",
-            font=("Arial", 30, "bold"),
-            bg="white"
-
+            font=("montserrat", 40  , "bold"),
+            bg="#7876FD",
+            fg='#191835',
         )
-        txtlabel.pack(pady=(30, 50))
-
+        txtlabel.pack(pady=(15,25))
+        
 
         # img2 = PhotoImage(file="file name")
 
         labelinst = Label(
             self.root,
-            text="Instructions\n",
-            font=("Arial", 20),
-            bg="white",
-            justify="center"
+            text="Instructions",
+            font=("calibri", 25,"bold"),
+            bg="#7876FD",
+            justify="center",
+            foreground="#fbfd76"
         )
-        labelinst.pack(pady=(10, 0))
+        labelinst.pack()
 
         labelinstr = Label(
             self.root,
-            text="points",
+            text="1.Can not jump to previous question\n2.",
             width=100,
-            font=("Arial", 15),
-            bg="black",
-            foreground="yellow"
+            font=("calibri", 20,"bold"),
+            bg="#7876FD",
+            foreground="#fbfd76"
         )
-        labelinstr.pack(pady=(0, 30))
+        labelinstr.pack(pady=(0, 10))
 
         # a = questions()
         # use image=img1 in place of text in button
+        Eimg = Image.open("EASYimg.png")
+        EEimg = ImageTk.PhotoImage(Eimg)
         E_button = Button(
             self.root,
             text="Easy",
+            image=EEimg,
+            bg='#7876FD',
             relief=FLAT,
+            activebackground="#7876FD",
             command=self.Easy
         )
+        E_button.img = EEimg
         E_button.pack(pady=(0, 30))
 
-
+        Mimg = Image.open("MEDimg.png")
+        MMimg = ImageTk.PhotoImage(Mimg)
         M_button = Button(
             self.root,
             text="Medium",
+            image=MMimg,
+            bg="#7876FD",
             relief=FLAT,
+            activebackground="#7876FD",
             command=self.Medium
         )
+        M_button.img = MMimg
         M_button.pack(pady=(0, 30))
 
 
+        Himg = Image.open("HARDimg.png")
+        HHimg = ImageTk.PhotoImage(Himg)
         H_button = Button(
             self.root,
-            text="Hard",
+            text="HARD",
+            image=HHimg,
+            bg="#7876FD",
             relief=FLAT,
+            activebackground="#7876FD",
             command=self.Hard
         )
+        H_button.img = HHimg
         H_button.pack(pady=(0, 30))
-
 
     questions = [
         "1 question",
@@ -110,13 +138,14 @@ class questions:
 
     # will contain the correct answers of questions
     answers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    answersM = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    answersH = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     user_ans = []
     indexes = []
     count = 1
 
-
     def gen(self):
-        while(len(self.indexes) < 5):
+        while(len(self.indexes) < 10):
             x = random.randint(0, 9)
             # if x not in indexes:
             #     indexes.append(x)
@@ -126,51 +155,62 @@ class questions:
                 self.indexes.append(x)
 
     def showresult(self,score):
-        global questionlabel ,r1 ,r2 , r3 , r4 
+        global questionlabel, labelinst1,r1 ,r2 , r3 , r4
         questionlabel.destroy()
         r1.destroy()
         r2.destroy()
         r3.destroy()
         r4.destroy()
 
+
         labelimg = Label(
             self.root,
-            bg="white",
+            bg="#7876FD",
             border=0
         )
         labelimg.pack()
 
         labelresulttext = Label(
             self.root,
-            font=("Arial", 20),
-            bg="white"
+            font=("impact", 20),
+            bg="#7876FD",
+            justify=CENTER,
         )
-        labelresulttext.pack()
+        labelresulttext.pack(pady=200)
 
-        if score >= 20:
+        if score >= 15:
             # img = PhotoImage(file="image.png")
             # labelimg.configure(image=img)
             # labelimage.image = img
             labelresulttext.configure(
-                text="You did excellent !!!!!\n\n you got " + str(score)
+                text="You did excellent !!!!!\n you got " + str(score)
             )
 
-        elif score < 20 or score >= 10:
+        elif score < 10 or score >= 8:
             # img = PhotoImage(file="image.png")
             # labelimg.configure(image=img)
             # labelimage.image = img
             labelresulttext.configure(
-                text="You can do better !!!!!\n\n you got " + str(score)
+                text="You can do better !!!!!\n you got " + str(score)
             )
 
-        elif score < 10:
+        elif score < 8:
             # img = PhotoImage(file="image.png")
             # labelimg.configure(image=img)
             # labelimage.image = img
             labelresulttext.configure(
-                text="you should work hard !!!!!\n\n you got " + str(score)
+                text="you should work hard !!!!!\n you got " + str(score)
             )
 
+        Button(
+            self.root,
+            text="Leaderboard",
+            font=("calibri", 20,"bold"),
+            bg="#7876FD",
+            # relief=FLAT,  
+            activebackground="#7876FD",
+            #command =
+        ).place(x=500,y=500)
         return score
 
     def calc(self):
@@ -180,19 +220,20 @@ class questions:
         for i in self.indexes:
             # print("temp = ", x1)
             if self.user_ans[x1] == self.answers[i]:
-                score += 5
+                score += 2
             x1 += 1
         # print("score = ", score)
         self.showresult(score)
 
     def selected(self):
-        global questionlabel ,r1 ,r2 , r3 , r4
+        global questionlabel ,labelinst1,r1 ,r2 , r3 , r4
         x = self.radiovar.get()
+        
         # here x will get the value which user choose as input
         # print(x)
         self.user_ans.append(x)
         self.radiovar.set(-1)
-        if self.count < 5:
+        if self.count < 10:
             questionlabel.config(text=self.questions[self.indexes[self.count]])
             r1['text'] = self.choice_ans[self.indexes[self.count]][0]
             r2['text'] = self.choice_ans[self.indexes[self.count]][1]
@@ -200,24 +241,25 @@ class questions:
             r4['text'] = self.choice_ans[self.indexes[self.count]][3]
             self.count += 1
         else:
-            print(self.indexes)
-            print(self.user_ans)
+            # print(self.indexes)
+            # print(self.user_ans)
             self.calc()
 
     def start_Q(self):
-        global questionlabel ,r1 ,r2,r3,r4
+        global questionlabel ,r1,r2,r3,r4
         questionlabel = Label(
             self.root,
             # text="Sample Question which can be too long it will be in next line due to wrap length",
             text=self.questions[self.indexes[0]],
-            font=("Arial", 16),
+            font=("impact", 16),
             width=500,
             justify="center",
             wraplength=400,
-            bg="white",
+            bg="#7876FD",
         )
         questionlabel.pack(pady=(100, 30))
 
+    
         self.radiovar = IntVar()
         self.radiovar.set(-1)
         # by setting radio var -1 it will not check any option automatically
@@ -228,8 +270,10 @@ class questions:
             font=("Times", 12),
             value=0,
             variable=self.radiovar,
-            command=self.selected,
-            bg="white",
+            # command=self.selected,
+            bg="#7876FD",
+            activebackground="#7876FD",
+            justify=LEFT,
         )
         r1.pack(pady=5)
 
@@ -239,8 +283,9 @@ class questions:
             font=("Times", 12),
             value=1,
             variable=self.radiovar,
-            command=self.selected,
-            bg="white",
+            # command=self.selected,
+            bg="#7876FD",
+            activebackground="#7876FD",
         )
         r2.pack(pady=5)
 
@@ -250,8 +295,9 @@ class questions:
             font=("Times", 12),
             value=2,
             variable=self.radiovar,
-            command=self.selected,
-            bg="white",
+            # command=self.selected,
+            bg="#7876FD",
+            activebackground="#7876FD",
         )
         r3.pack(pady=5)
 
@@ -261,10 +307,21 @@ class questions:
             font=("Times", 12),
             value=3,
             variable=self.radiovar,
-            command=self.selected,
-            bg="white",
+            # command=self.selected,
+            bg="#7876FD",
+            activebackground="#7876FD",
         )
         r4.pack(pady=5)
+
+        Button(
+            self.root,
+            text="NEXT",
+            command=self.selected,
+            font=("calibri", 20,"bold"),
+            bg="#7876FD",
+            activebackground="#7876FD",
+
+        ).place(x=550,y=500)
 
     def Easy(self):
         labelinst.destroy()
