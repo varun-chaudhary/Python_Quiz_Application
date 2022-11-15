@@ -1,12 +1,153 @@
-from PIL import Image , ImageTk
 from tkinter import*
+from tkinter import messagebox
+import mysql.connector
+from PIL import Image, ImageTk
 import random
 
-def main():
-    root = Tk()
-    quiz = questions(root)
-    root.mainloop()
 
+class Portal:
+    def __init__(self,scn):
+        self.scn=scn
+        self.scn.geometry("450x500")
+        self.scn.resizable(False,False)
+        self.scn.title("Quiz")
+        background = Image.open("back5.jpg")
+        resize_background = background.resize((450, 500))
+        bgimg = ImageTk.PhotoImage(resize_background)
+        bg1=Label(self.scn,image=bgimg)
+        bg1.image=bgimg
+        bg1.place(x=0,y=0)
+
+  
+        Button(self.scn,text="Register",font="Times 30 bold",bg="red",fg="white",command=self.register_window).pack(pady=40)
+        Button(self.scn,text="Login",font="Times 30 bold",bg="red",fg="white",command=self.login_window).pack(pady=40)
+        Button(self.scn,text="Leaderboard",font="Times 30 bold",bg="red",fg="white",command=self.leaderboard_window).pack(pady=40) 
+
+
+    def register_window(self):
+
+        self.scn.destroy()
+        screen=Tk()
+        Register_window(screen)
+        screen.mainloop()
+
+
+    def login_window(self):
+        self.scn.destroy()
+        screen=Tk()
+        Login_window(screen)
+        screen.mainloop()
+
+    def leaderboard_window(self):
+        self.lgn_screen=Toplevel(self.scn)
+        self.lgn_scn=Leaderboard(self.lgn_screen)
+
+class Register_window:
+
+    def __init__(self,screen):
+        self.screen=screen
+        self.screen.title("Registeration Form")
+        self.screen.geometry("450x500")
+        self.screen.resizable(False,False)
+        Label(self.screen,text="Register here",font="Times 30 bold",bg="red",fg="white").pack(fill="both")
+        Label(self.screen,text="Name",font="20").place(x=45,y=100)
+        Label(self.screen,text="Roll number",font="20").place(x=45,y=150) 
+        Label(self.screen,text="Section",font="20").place(x=45,y=200)
+        Label(self.screen,text="Password",font="20").place(x=45,y=250)
+        self.name_info=StringVar()
+        self.regno_info=StringVar()
+        self.section_info=StringVar()
+        self.passw_info=StringVar()
+        self.name_entry=Entry(self.screen,font="10",bd="4",textvariable=self.name_info)
+        self.name_entry.place(x=205,y=100)
+        self.regno_entry=Entry(self.screen,font="10",bd="4",textvariable=self.regno_info)
+        self.regno_entry.place(x=205,y=150)
+        self.section_entry=Entry(self.screen,font="10",bd="4",textvariable=self.section_info)
+        self.section_entry.place(x=205,y=200)
+        self.pass_entry=Entry(self.screen,font="10",bd="4",textvariable=self.passw_info)
+        self.pass_entry.place(x=205,y=250)
+        Button(self.screen, text="Register",font="50",bg="red",fg="white",command=self.register).place(x=185,y=350)
+        Button(self.screen, text="Already have an account ? Login here",font="50",fg="green",command=self.login_window).place(x=150,y=450)
+    
+    def login_window(self):
+        self.screen.destroy()
+        screen=Tk()
+        Login_window(screen)
+        screen.mainloop()
+
+    def register(self):
+        name=self.name_info.get()
+        regno=self.regno_info.get()
+        section=self.section_info.get()
+        passw=self.passw_info.get()
+        score=0
+        enter_into_db=(regno,name,section,passw,score)
+        if name=="":
+            messagebox.showerror("Empty Field!!!","Please enter your Name")
+        elif regno=="":
+            messagebox.showerror("Empty Field!!!","Please enter your Roll Number")
+        elif (not regno.isnumeric()):
+            messagebox.showerror("Invalid Entry","Roll Number must be numeric")
+        elif section=="":
+            messagebox.showerror("Empty Field!!!","Please enter your Section")
+        elif passw=="":
+            messagebox.showerror("Empty Field!!!","Please enter your Password")
+        else:  
+            conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
+            cur=conn.cursor()
+            query=("select * from student where rollno=%s")
+            value=(regno)
+            cur.execute(query,(value,))
+            row=cur.fetchone()
+            if row!=None:
+                messagebox.showerror("Error","Account already created try loging in")
+            else:
+                cur.execute("insert into student values(%s,%s,%s,%s,%s)",enter_into_db)
+                success=Label(self.screen,text="Registeration Successfull !!!",font="10",fg="green").place(x=130,y=400)                
+                conn.commit()
+                conn.close()
+
+class Login_window:
+    def __init__(self,screenlw):
+        self.screenlw=screenlw
+        self.screenlw.title("Login here")
+        self.screenlw.geometry("450x500")
+        self.screenlw.resizable(False,False)
+        self.passw_etd=StringVar()
+        self.regno_etd=StringVar()
+
+
+        Label(screenlw,text="Login here",font="Times 30 bold",bg="red",fg="white").pack(fill="both")
+        Label(screenlw,text="Roll number",font="20").place(x=45,y=150) 
+        Label(screenlw,text="Password",font="20").place(x=45,y=250)
+        self.regno_loginenter=Entry(screenlw,font="10",bd="4",textvariable=self.regno_etd)
+        self.regno_loginenter.place(x=205,y=150)
+        self.pass_loginenter=Entry(screenlw,font="10",bd="4",textvariable=self.passw_etd)
+        self.pass_loginenter.place(x=205,y=250)
+        Button(screenlw, text="Login",font="50",bg="red",fg="white",command=self.login).place(x=185,y=350)
+        mainloop()
+
+    def login(self):
+        self.regno=self.regno_etd.get()
+        self.passw=self.passw_etd.get()
+        cred=(self.regno,self.passw)
+        global rollnumber
+        rollnumber=self.regno
+
+        if self.regno=="" or self.passw=="":
+            messagebox.showerror("Empty Field!!!","All field are required")
+        else:
+            conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
+            cur=conn.cursor()
+            cur.execute("select * from student where rollno=%s and passw=%s",cred)
+            row=cur.fetchone()
+            if row==None:
+                messagebox.showerror("Error","Invalid Username and Password")
+            else:
+                self.screenlw.destroy()
+                screen=Tk()
+                questions(screen)
+                screen.mainloop()
 
 class questions:
     def __init__(self , root):
@@ -19,14 +160,20 @@ class questions:
         self.root.config(bg="#7876FD")
         self.root.resizable(0, 0)
         self.root.configure(bg='#7876FD')
-        # img1 = PhotoImage(file="terentula nebula.png")
-        # img1label = Label(self.root, image=img1, bg="#7876FD")
-        # img1label.pack(paddy = (40,0))
+        
+        conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
+        ask_cur=conn.cursor()
+        ask_query=("select name from student where rollno=%s")
+        ask_cur.execute(ask_query,(rollnumber,))
+        row=ask_cur.fetchone()
+        name=row[0]
+        conn.commit()
+        conn.close()
 
         labelinst1 = Label(
             self.root,
-            text='Hello',
-            font=("impact",20,"bold"),
+            text= name,
+            font=("impact",20),
             bg='#20b2aa', #7876FD
             # fg='#4DB1FF',
         )
@@ -72,6 +219,7 @@ class questions:
         E_button = Button(
             self.root,
             text="Easy",
+            font=("impact",20),
             # image=EEimg,
             bg='#7876FD',
             relief=FLAT,
@@ -86,6 +234,7 @@ class questions:
         M_button = Button(
             self.root,
             text="Medium",
+            font=("impact",20),
             # image=MMimg,
             bg="#7876FD",
             relief=FLAT,
@@ -101,6 +250,7 @@ class questions:
         H_button = Button(
             self.root,
             text="HARD",
+            font=("impact",20),
             # image=HHimg,
             bg="#7876FD",
             relief=FLAT,
@@ -205,9 +355,30 @@ class questions:
                 continue
             else:
                 self.indexes.append(x)
+    def leaderboard_window(self):
+        self.root=Toplevel(self.root)
+        self.lgn_scn=Leaderboard(self.root)
 
     def showresult(self,score):
         global questionlabel, labelinst1,r1 ,r2 , r3 , r4
+        valinp=(score,rollnumber)
+        conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
+        ask_cur=conn.cursor()
+        ask_query=("select score from student where rollno=%s")
+        ask_cur.execute(ask_query,(rollnumber,))
+        row=ask_cur.fetchone()
+        prev_score=row[0]
+        if(prev_score<score):
+            #write here that congragulations you score better than previous attempt
+            cur=conn.cursor()
+            query=("update student set score=%s where rollno=%s")
+            cur.execute(query,valinp)
+            conn.commit()
+            conn.close()
+        else:
+            pass
+            #write here that your previous score was better so your score is not appeared
+        
         questionlabel.destroy()
         r1.destroy()
         r2.destroy()
@@ -261,7 +432,7 @@ class questions:
             bg="#7876FD",
             # relief=FLAT,  
             activebackground="#7876FD",
-            #command =
+            command =self.leaderboard_window
         ).place(x=500,y=500)
         return score
 
@@ -631,6 +802,53 @@ class questions:
         self.gen()
         self.start_QH()
 
+class Leaderboard:
+    def __init__(self,scn):
+        self.scn=scn
+        self.scn.geometry("600x300")
+        self.scn.resizable(False,False)
+        self.scn.title("Leaderboard")
+        self.scn.configure(bg="white")
 
-if __name__ == '__main__':
-    main()
+
+        conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
+        cur=conn.cursor()
+        query=("select rollno,name,section,score from student order by score desc")
+        cur.execute(query)
+        rows=cur.fetchall()
+        headings=("RANK","Roll Number","Name","Section","Score")
+        for n in range(len(headings)):
+            h=Label(self.scn,width=10,font="Times 14 bold",fg="white",text=headings[n],bg="red",)
+            h.grid(row=0,column=n)
+
+        i=1
+        for student in rows:
+            temp=(i,)
+            complete=temp+student
+            e=Label(self.scn,width=10,fg="blue",text=i,bg="red",font="Times 14 bold")
+            for j in range(len(student)+1):
+                e=Label(self.scn,width=10,fg="blue",text=complete[j],bg="white",font="Times 14 bold")
+                e.grid(row=i,column=j)
+            i=i+1
+        conn.close()
+
+
+
+    def viewsb(self):
+        conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
+        cur=conn.cursor()
+        query=("select rollno,name,section,score from student order by score desc")
+        cur.execute(query)
+        rows=cur.fetchall()
+        for row in rows:
+            # print(row) 
+            self.tree.insert("", END, values=row)        
+            conn.close()
+
+
+
+screen=Tk()
+Portal(screen)
+screen.mainloop()
+
+
