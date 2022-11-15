@@ -174,8 +174,7 @@ class questions:
             self.root,
             text= name,
             font=("impact",20),
-            bg='#20b2aa', #7876FD
-            # fg='#4DB1FF',
+            bg='#20b2aa',
         )
         labelinst1.pack(fill="both")
 
@@ -189,9 +188,6 @@ class questions:
         )
         txtlabel.pack(pady=(15,25))
         
-
-        # img2 = PhotoImage(file="file name")
-
         labelinst = Label(
             self.root,
             text="Instructions",
@@ -212,8 +208,6 @@ class questions:
         )
         labelinstr.pack(pady=(0, 10))
 
-        # a = questions()
-        # use image=img1 in place of text in button
         # Eimg = Image.open("EASYimg.png")
         # EEimg = ImageTk.PhotoImage(Eimg)
         E_button = Button(
@@ -286,6 +280,7 @@ class questions:
         ["9", "Error", "9.0", "None of the mentioned"],
         ["{1, 2, 3}", "{}", "[1, 2, 3]", "(1, 2, 3)"],
     ]
+    
     #MEDIUM QUESTIONS 1-10
     questionsMED = [
         "What is the maximum length of a Python identifier?",
@@ -312,6 +307,7 @@ class questions:
         ["65536", "33", "169", "None of these"],
         ["count()", "upper()", "strip()", "All of the above"],
     ]
+    
     #HARD QUESTIONS 1-10
     questionsHARD = [
         "What will be the output of the following code : 'print type(type(int))'",
@@ -338,10 +334,12 @@ class questions:
         ["int", "bool", "void", "None"],
         ["C++", "C", "Java", "None of these"],
     ]
+    
     # will contain the correct answers of questions
     answersE = [2, 3, 2, 3, 1, 1, 2, 3, 2, 3]
     answersMED = [3, 0, 1, 2, 0, 3, 0, 1, 1, 3]
     answersHARD = [1, 0, 0, 3, 1, 2, 3, 3, 3, 2]
+    
     user_ans = []
     indexes = []
     count = 1
@@ -349,12 +347,11 @@ class questions:
     def gen(self):
         while(len(self.indexes) < 10):
             x = random.randint(0, 9)
-            # if x not in indexes:
-            #     indexes.append(x)
             if x in self.indexes:
                 continue
             else:
                 self.indexes.append(x)
+    
     def leaderboard_window(self):
         self.root=Toplevel(self.root)
         self.lgn_scn=Leaderboard(self.root)
@@ -369,15 +366,11 @@ class questions:
         row=ask_cur.fetchone()
         prev_score=row[0]
         if(prev_score<score):
-            #write here that congragulations you score better than previous attempt
             cur=conn.cursor()
             query=("update student set score=%s where rollno=%s")
             cur.execute(query,valinp)
             conn.commit()
             conn.close()
-        else:
-            pass
-            #write here that your previous score was better so your score is not appeared
         
         questionlabel.destroy()
         r1.destroy()
@@ -402,25 +395,16 @@ class questions:
         labelresulttext.pack(pady=200)
 
         if score >= 15:
-            # img = PhotoImage(file="image.png")
-            # labelimg.configure(image=img)
-            # labelimage.image = img
             labelresulttext.configure(
                 text="You did excellent !!!!!\n you got " + str(score)
             )
 
         elif score < 10 or score >= 8:
-            # img = PhotoImage(file="image.png")
-            # labelimg.configure(image=img)
-            # labelimage.image = img
             labelresulttext.configure(
                 text="You can do better !!!!!\n you got " + str(score)
             )
 
         elif score < 8:
-            # img = PhotoImage(file="image.png")
-            # labelimg.configure(image=img)
-            # labelimage.image = img
             labelresulttext.configure(
                 text="you should work hard !!!!!\n you got " + str(score)
             )
@@ -429,72 +413,62 @@ class questions:
             self.root,
             text="Leaderboard",
             font=("calibri", 20,"bold"),
-            bg="#7876FD",
-            # relief=FLAT,  
+            bg="#7876FD", 
             activebackground="#7876FD",
             command =self.leaderboard_window
         ).place(x=500,y=500)
         return score
 
     def calc_E(self):
-        # global indexes, user_ans, answers
         x1 = 0
         score = 0
         for i in self.indexes:
-            # print("temp = ", x1)
             if self.user_ans[x1] == self.answersE[i]:
                 score += 2
             x1 += 1
-        # print("score = ", score)
         self.showresult(score)
+    
     def calc_M(self):
-        # global indexes, user_ans, answers
         x1 = 0
         score = 0
         for i in self.indexes:
-            # print("temp = ", x1)
             if self.user_ans[x1] == self.answersMED[i]:
-                score += 2
+                score += 3
             x1 += 1
-        # print("score = ", score)
         self.showresult(score)
+    
     def calc_H(self):
-        # global indexes, user_ans, answers
         x1 = 0
         score = 0
         for i in self.indexes:
-            # print("temp = ", x1)
             if self.user_ans[x1] == self.answersHARD[i]:
-                score += 2
+                score += 5
             x1 += 1
-        # print("score = ", score)
         self.showresult(score)
+    
     def selectedE(self):
         global questionlabel ,labelinst1,r1 ,r2 , r3 , r4
         x = self.radiovar.get()
-        
-        # here x will get the value which user choose as input
-        # print(x)
+
         self.user_ans.append(x)
         self.radiovar.set(-1)
         if self.count < 10:
             questionlabel.config(text=self.questionsEASY[self.indexes[self.count]])
+
             r1['text'] = self.choice_ansEASY[self.indexes[self.count]][0]
             r2['text'] = self.choice_ansEASY[self.indexes[self.count]][1]
             r3['text'] = self.choice_ansEASY[self.indexes[self.count]][2]
             r4['text'] = self.choice_ansEASY[self.indexes[self.count]][3]
+
             self.count += 1
         else:
-            # print(self.indexes)
-            # print(self.user_ans)
             self.calc_E()
+    
     def selectedM(self):
         global questionlabel ,labelinst1,r1 ,r2 , r3 , r4
         x = self.radiovar.get()
-        
-        # here x will get the value which user choose as input
-        # print(x)
         self.user_ans.append(x)
+
         self.radiovar.set(-1)
         if self.count < 10:
             questionlabel.config(text=self.questionsMED[self.indexes[self.count]])
@@ -504,16 +478,13 @@ class questions:
             r4['text'] = self.choice_ansMED[self.indexes[self.count]][3]
             self.count += 1
         else:
-            # print(self.indexes)
-            # print(self.user_ans)
             self.calc_M()
+    
     def selectedH(self):
         global questionlabel ,labelinst1,r1 ,r2 , r3 , r4
         x = self.radiovar.get()
-        
-        # here x will get the value which user choose as input
-        # print(x)
         self.user_ans.append(x)
+
         self.radiovar.set(-1)
         if self.count < 10:
             questionlabel.config(text=self.questionsHARD[self.indexes[self.count]])
@@ -523,18 +494,17 @@ class questions:
             r4['text'] = self.choice_ansHARD[self.indexes[self.count]][3]
             self.count += 1
         else:
-            # print(self.indexes)
-            # print(self.user_ans)
             self.calc_H()
+    
     def start_QE(self):
         global questionlabel ,r1,r2,r3,r4
         questionlabel = Label(
             self.root,
-            # text="Sample Question which can be too long it will be in next line due to wrap length",
             text=self.questionsEASY[self.indexes[0]],
             font=("Times", 20, "bold"),
             width=500,
             justify="center",
+            # text="Sample Question which can be too long it will be in next line due to wrap length",
             wraplength=400,
             bg="#7876FD",
         )
@@ -557,7 +527,6 @@ class questions:
             justify=LEFT,
         )
         r1.place(x=150, y=300)
-        # r1.pack()
 
         r2 = Radiobutton(
             self.root,
@@ -570,7 +539,6 @@ class questions:
             activebackground="#7876FD",
         )
         r2.place(x=150, y=400)
-        # r2.pack(padx=(400,0),pady=0)
 
         r3 = Radiobutton(
             self.root,
@@ -583,7 +551,6 @@ class questions:
             activebackground="#7876FD",
         )
         r3.place(x=400, y=300)
-        # r3.pack(pady=5)
 
         r4 = Radiobutton(
             self.root,
@@ -596,7 +563,6 @@ class questions:
             activebackground="#7876FD",
         )
         r4.place(x=400, y=400)
-        # r4.pack(pady=5)
 
         Button(
             self.root,
@@ -607,6 +573,7 @@ class questions:
             activebackground="#7876FD",
 
         ).place(x=550,y=500)
+    
     def start_QM(self):
         global questionlabel ,r1,r2,r3,r4
         questionlabel = Label(
@@ -635,10 +602,8 @@ class questions:
             # command=self.selected,
             bg="#7876FD",
             activebackground="#7876FD",
-            justify=LEFT,
         )
         r1.place(x=150, y=300)
-        # r1.pack(pady=5)
 
         r2 = Radiobutton(
             self.root,
@@ -651,7 +616,6 @@ class questions:
             activebackground="#7876FD",
         )
         r2.place(x=150, y=400)
-        # r2.pack(pady=5)
 
         r3 = Radiobutton(
             self.root,
@@ -664,7 +628,6 @@ class questions:
             activebackground="#7876FD",
         )
         r3.place(x=400, y=300)
-        # r3.pack(pady=5)
 
         r4 = Radiobutton(
             self.root,
@@ -677,7 +640,6 @@ class questions:
             activebackground="#7876FD",
         )
         r4.place(x=400, y=400)
-        # r4.pack(pady=5)
 
         Button(
             self.root,
@@ -688,6 +650,7 @@ class questions:
             activebackground="#7876FD",
 
         ).place(x=550,y=500)
+    
     def start_QH(self):
         global questionlabel ,r1,r2,r3,r4
         questionlabel = Label(
@@ -716,10 +679,8 @@ class questions:
             # command=self.selected,
             bg="#7876FD",
             activebackground="#7876FD",
-            justify=LEFT,
         )
         r1.place(x=150, y=300)
-        # r1.pack(pady=5)
 
         r2 = Radiobutton(
             self.root,
@@ -732,7 +693,6 @@ class questions:
             activebackground="#7876FD",
         )
         r2.place(x=150, y=400)
-        # r2.pack(pady=5)
 
         r3 = Radiobutton(
             self.root,
@@ -745,7 +705,6 @@ class questions:
             activebackground="#7876FD",
         )
         r3.place(x=400, y=300)
-        # r3.pack(pady=5)
 
         r4 = Radiobutton(
             self.root,
@@ -758,7 +717,6 @@ class questions:
             activebackground="#7876FD",
         )
         r4.place(x=400, y=400)
-        # r4.pack(pady=5)
 
         Button(
             self.root,
@@ -769,10 +727,10 @@ class questions:
             activebackground="#7876FD",
 
         ).place(x=550,y=500)
+    
     def Easy(self):
         labelinst.destroy()
         labelinstr.destroy()
-        # img1label.destroy()
         txtlabel.destroy()
         E_button.destroy()
         M_button.destroy()
@@ -801,6 +759,7 @@ class questions:
         H_button.destroy()
         self.gen()
         self.start_QH()
+
 
 class Leaderboard:
     def __init__(self,scn):
