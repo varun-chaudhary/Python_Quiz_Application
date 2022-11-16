@@ -158,8 +158,7 @@ class questions:
         self.root.title("Quiz")
         self.root.geometry('700x600')
         self.root.config(bg="#7876FD")
-        self.root.resizable(0, 0)
-        self.root.configure(bg='#7876FD')
+        self.root.resizable(False, False)
         
         conn=mysql.connector.connect(host='localhost',password='1234',user='root',database="sys")
         ask_cur=conn.cursor()
@@ -200,7 +199,7 @@ class questions:
 
         labelinstr = Label(
             self.root,
-            text="1.Can not jump to previous question\n2.",
+            text="*You can not jump to previous question*\n",
             width=100,
             font=("calibri", 20,"bold"),
             bg="#7876FD",
@@ -208,50 +207,50 @@ class questions:
         )
         labelinstr.pack(pady=(0, 10))
 
-        # Eimg = Image.open("EASYimg.png")
-        # EEimg = ImageTk.PhotoImage(Eimg)
+        Eimg = Image.open("EASYimg.png")
+        EEimg = ImageTk.PhotoImage(Eimg)
         E_button = Button(
             self.root,
             text="Easy",
             font=("impact",20),
-            # image=EEimg,
+            image=EEimg,
             bg='#7876FD',
             relief=FLAT,
             activebackground="#7876FD",
             command=self.Easy
         )
-        # E_button.img = EEimg
+        E_button.img = EEimg
         E_button.pack(pady=(0, 30))
 
-        # Mimg = Image.open("MEDimg.png")
-        # MMimg = ImageTk.PhotoImage(Mimg)
+        Mimg = Image.open("MEDimg.png")
+        MMimg = ImageTk.PhotoImage(Mimg)
         M_button = Button(
             self.root,
             text="Medium",
             font=("impact",20),
-            # image=MMimg,
+            image=MMimg,
             bg="#7876FD",
             relief=FLAT,
             activebackground="#7876FD",
             command=self.Medium
         )
-        # M_button.img = MMimg
+        M_button.img = MMimg
         M_button.pack(pady=(0, 30))
 
 
-        # Himg = Image.open("HARDimg.png")
-        # HHimg = ImageTk.PhotoImage(Himg)
+        Himg = Image.open("HARDimg.png")
+        HHimg = ImageTk.PhotoImage(Himg)
         H_button = Button(
             self.root,
             text="HARD",
             font=("impact",20),
-            # image=HHimg,
+            image=HHimg,
             bg="#7876FD",
             relief=FLAT,
             activebackground="#7876FD",
             command=self.Hard
         )
-        # H_button.img = HHimg
+        H_button.img = HHimg
         H_button.pack(pady=(0, 30))
         
     #EASY QUESTIONS 1-10
@@ -521,7 +520,7 @@ class questions:
             font=("Times", 16),
             value=0,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
             justify=LEFT,
@@ -534,7 +533,7 @@ class questions:
             font=("Times", 16),
             value=1,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -546,7 +545,7 @@ class questions:
             font=("Times", 16),
             value=2,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -558,7 +557,7 @@ class questions:
             font=("Times", 16),
             value=3,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -599,7 +598,7 @@ class questions:
             font=("Times", 16),
             value=0,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -611,7 +610,7 @@ class questions:
             font=("Times", 16),
             value=1,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -623,7 +622,7 @@ class questions:
             font=("Times", 16),
             value=2,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -635,7 +634,7 @@ class questions:
             font=("Times", 16),
             value=3,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -676,7 +675,7 @@ class questions:
             font=("Times", 16),
             value=0,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -688,7 +687,7 @@ class questions:
             font=("Times", 16),
             value=1,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -700,7 +699,7 @@ class questions:
             font=("Times", 16),
             value=2,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -712,7 +711,7 @@ class questions:
             font=("Times", 16),
             value=3,
             variable=self.radiovar,
-            # command=self.selected,
+            # command=self.selected, # if you want to give command to radiobutton
             bg="#7876FD",
             activebackground="#7876FD",
         )
@@ -741,7 +740,6 @@ class questions:
     def Medium(self):
         labelinst.destroy()
         labelinstr.destroy()
-        # img1label.destroy()
         txtlabel.destroy()
         E_button.destroy()
         M_button.destroy()
@@ -752,14 +750,12 @@ class questions:
     def Hard(self):
         labelinst.destroy()
         labelinstr.destroy()
-        # img1label.destroy()
         txtlabel.destroy()
         E_button.destroy()
         M_button.destroy()
         H_button.destroy()
         self.gen()
         self.start_QH()
-
 
 class Leaderboard:
     def __init__(self,scn):
